@@ -42,7 +42,7 @@ interface Data {
     assigned_to: string;
 }
 
-function createData(
+export function createData(
     id: number,
     name: string,
     industry: number,
@@ -230,18 +230,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         >
 
 
-            {/*<Tooltip className='flex flex-row items-center' title="Filter list">*/}
-            {/*    <IconButton>*/}
-            {/*        <FilterListIcon />*/}
-            {/*    </IconButton>*/}
 
-            {/*    <Typography*/}
-
-            {/*        variant="subtitle2"*/}
-            {/*    >*/}
-            {/*        Sort By*/}
-            {/*    </Typography>*/}
-            {/*</Tooltip>*/}
 
         </Toolbar>
     );
@@ -293,14 +282,7 @@ export default function Leads() {
         [order, orderBy]
     );
 
-    //     const handleRequestSort = (
-    //     event: React.MouseEvent<unknown>,
-    //     property: keyof Data,
-    // ) => {
-    //     const isAsc = orderBy === property && order === 'asc';
-    //     setOrder(isAsc ? 'desc' : 'asc');
-    //     setOrderBy(property);
-    // };
+
 
     const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {

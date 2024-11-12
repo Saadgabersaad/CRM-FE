@@ -168,7 +168,7 @@ export default function BasicTabs({data,defaultTab,id}:{data:any,defaultTab:any,
             </CustomTabPanel>
 
             <CustomTabPanel value={value} index={1}>
-                <CollapsibleTable/>
+                <CollapsibleTable data={data} />
             </CustomTabPanel>
 
 

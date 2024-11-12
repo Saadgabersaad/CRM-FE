@@ -59,19 +59,23 @@ const pathname =usePathname()
         const fetchDataById=  async()=>{
 
             try {
+
+                const response = await ApiService.getCustomerById(selectedId);
+                const data = response.data.data;
+                setProfileData(data);
                 // Check if data is already saved in localStorage
-                const savedData = localStorage.getItem(`data-${selectedId}`);
-                if (savedData) {
-                    // If data exists in localStorage, set it directly
-                    setProfileData(JSON.parse(savedData));
-                } else {
-                    // Otherwise, fetch the data from API
-                    const response = await ApiService.getCustomerById(selectedId);
-                    const data = response.data.data;
-                    setProfileData(data);
-                    // Store the fetched data in localStorage
-                    localStorage.setItem(`data-${selectedId}`, JSON.stringify(data));
-                }
+                // const savedData = localStorage.getItem(`data-${selectedId}`);
+                // if (savedData) {
+                //     // If data exists in localStorage, set it directly
+                //     setProfileData(JSON.parse(savedData));
+                // } else {
+                //     // Otherwise, fetch the data from API
+                //     const response = await ApiService.getCustomerById(selectedId);
+                //     const data = response.data.data;
+                //     setProfileData(data);
+                //     // Store the fetched data in localStorage
+                //     localStorage.setItem(`data-${selectedId}`, JSON.stringify(data));
+                // }
             } catch (error) {
                 console.error('Failed to fetch customers:', error);
             } finally {

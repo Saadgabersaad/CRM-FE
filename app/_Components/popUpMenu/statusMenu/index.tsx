@@ -10,11 +10,9 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { usePathname } from 'next/navigation';
 import ApiService from "@/app/services/api.service";
-import {useIDContext} from "@/app/context/customerIdProvider";
-import {useFormik} from "formik";
-import {useCallback, useEffect} from "react";
-
-
+import { useIDContext } from "@/app/context/customerIdProvider";
+import { useFormik } from "formik";
+import { useCallback, useEffect, useState } from "react";
 
 interface Option {
     label: string;
@@ -53,10 +51,10 @@ export default function StatusMenu({ initialStatus, initialState }: StatusMenuPr
     const { selectedId } = useIDContext();
     const pathname = usePathname();
     const options = React.useMemo(() => pathname === '/customers' ? statusOptions : stateOptions, [pathname]);
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const [selectedIndex, setSelectedIndex] = React.useState(0);
-    const [selectedStatus, setSelectedStatus] = React.useState(initialStatus);
-    const [selectedState, setSelectedState] = React.useState(initialState);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [selectedIndex, setSelectedIndex] = useState(0);
+    const [selectedStatus, setSelectedStatus] = useState(initialStatus);
+    const [selectedState, setSelectedState] = useState(initialState);
 
     const open = Boolean(anchorEl);
 
@@ -64,26 +62,38 @@ export default function StatusMenu({ initialStatus, initialState }: StatusMenuPr
         setAnchorEl(event.currentTarget);
     };
 
-    const handleMenuItemClick = (event: React.MouseEvent<HTMLElement>, index: number) => {
+    const handleMenuItemClick = async (event: React.MouseEvent<HTMLElement>, index: number) => {
         const selectedOption = options[index];
-      if (pathname === '/customers'){
-               setSelectedStatus(selectedOption.label.toLowerCase())
-      }
-           else setSelectedState(selectedOption.label.toLowerCase());
-
         setSelectedIndex(index);
+
+        if (pathname === '/customers') {
+            const newStatus = selectedOption.label.toLowerCase();
+            if (newStatus !== selectedStatus) {
+                setSelectedStatus(newStatus);
+                await updateStatus(newStatus); // Call updateStatus with the new status
+            }
+        } else {
+            const newState = selectedOption.label.toLowerCase();
+            if (newState !== selectedState) {
+                setSelectedState(newState);
+                await updateStatus(newState); // Call updateStatus with the new state
+            }
+        }
+
         setAnchorEl(null);
     };
 
-    const updateStatus = useCallback(async () => {
-        const newStatus = pathname === '/customers' ? selectedStatus : selectedState;
-        try {
-            await ApiService.updateCustomerStatus(selectedId, { status: newStatus });
-            console.log('Status updated successfully:', newStatus);
-        } catch (error) {
-            console.error('Failed to update status:', error);
-        }
-    }, [selectedId, pathname, selectedStatus, selectedState]);
+    const updateStatus = useCallback(
+        async (newStatus: string) => {
+            try {
+                await ApiService.updateCustomerStatus(selectedId, { status: newStatus });
+                console.log('Status updated successfully:', newStatus);
+            } catch (error) {
+                console.error('Failed to update status:', error);
+            }
+        },
+        [selectedId]
+    );
 
     const formik = useFormik({
         initialValues: {
@@ -106,10 +116,6 @@ export default function StatusMenu({ initialStatus, initialState }: StatusMenuPr
         },
     });
 
-
-    // TODO: move it to a regular function
-    // call it onChange()
-    // and use the update-request
     useEffect(() => {
         const fetchCustomerData = async () => {
             try {
@@ -119,7 +125,7 @@ export default function StatusMenu({ initialStatus, initialState }: StatusMenuPr
                 if (customerData) {
                     formik.setValues(customerData);
                     if (selectedStatus !== initialStatus || selectedState !== initialState) {
-                        await updateStatus();
+                        await updateStatus(pathname === '/customers' ? selectedStatus : selectedState);
                     }
                 }
             } catch (error) {
@@ -127,12 +133,8 @@ export default function StatusMenu({ initialStatus, initialState }: StatusMenuPr
             }
         };
 
-        // if (selectedId) fetchCustomerData();
-
         return () => setAnchorEl(null); // Cleanup anchor element on unmount
     }, [selectedId, selectedStatus, selectedState, initialStatus, initialState, updateStatus]);
-
-
 
     const handleClose = () => {
         setAnchorEl(null);

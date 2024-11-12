@@ -56,7 +56,7 @@ class ApiService {
 
     async updateCustomerStatus(id: number | null, values: { status: string }) {
         try {
-            const response = await axios.put(
+            const response = await axios.patch(
                 `${this._basePath}customers/${id}`,
                 values
             );
@@ -145,7 +145,12 @@ class ApiService {
             value,
         );
     };
-
+    async postAccountContact(value:string) {
+        return await axios.post(
+            this._basePath + 'accounts',
+            value,
+        );
+    };
     async editAccount(id: number |null, values:string ) {
         try {
             const response = await axios.put(
