@@ -10,6 +10,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import SelectedButton from "@/app/_Components/secHeader/groupButton";
 import { TableOfContents,Rows2  } from 'lucide-react';
 import {usePathname} from "next/navigation";
+import {useToggle, useView} from "@/app/context/toggleContext";
+import {useEffect, useState} from "react";
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -27,6 +29,8 @@ const Search = styled('div')(({ theme }) => ({
     },
 }));
 
+
+
 const SearchIconWrapper = styled('div')(({ theme }) => ({
     padding: theme.spacing(0, 2),
     height: '100%',
@@ -36,7 +40,6 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
     alignItems: 'center',
     justifyContent: 'center',
 }));
-
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: 'inherit',
     width: '100%',
@@ -53,9 +56,23 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
         },
     },
 }));
-
     export default function SearchAppBar() {
         const pathname = usePathname()
+        const {view , setView} = useView();
+        // Handle button clicks to switch views
+
+        // Update view when the buttons are clicked
+        const handleViewOneClick = () => {
+            setView('viewOne');
+            console.log(view )
+        };
+        const handleViewTwoClick = () => {
+
+            setView('viewTwo');
+            console.log(view )
+        };
+
+        // This effect will be triggered every time the view changes
 
         return (
         <Box sx={{ width:'100%',right:'0',zIndex:'50',paddingLeft:'0px' }}>
@@ -75,11 +92,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
                     </Typography>
 
                     {pathname==='/leads'&&<div className={'flex gap-2 '}>
-                        <button className='secondaryColor mainColor p-3 rounded-lg'>
-                            <TableOfContents strokeWidth={4}/>
+                        <button
+                            onClick={handleViewOneClick}
+                            className='secondaryColor mainColor p-3 rounded-lg'>
+                            <TableOfContents strokeWidth={3.5}/>
                         </button>
-                        <button className='secondaryColor mainColor p-3 rounded-lg'>
-                            <Rows2 strokeWidth={4}/>
+                        <button
+                            onClick={handleViewTwoClick}
+                            className='secondaryColor mainColor p-3 rounded-lg'>
+                            <Rows2 strokeWidth={3.5}/>
                         </button>
                     </div>}
 

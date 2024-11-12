@@ -20,7 +20,7 @@ import ApiService from "@/app/services/api.service";
 import ResetFilter from "@/app/customers/resetFilter";
 import {useIDContext} from "@/app/context/customerIdProvider";
 import Image from "next/image";
-import Logo from "../assets/beed83bf6aee26c5540858387e08bd9a.jpeg"
+import Logo from "../../assets/beed83bf6aee26c5540858387e08bd9a.jpeg"
 import ModeCommentOutlinedIcon from '@mui/icons-material/ModeCommentOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
@@ -114,7 +114,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     );
 }
 
-export default function Leads() {
+export default function LeadsViewOne() {
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof Data>('name');
     const [selected, setSelected] = React.useState<readonly number[]>([]);

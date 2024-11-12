@@ -7,6 +7,7 @@ import {Nunito} from 'next/font/google'
 import {NextFont} from "next/dist/compiled/@next/font";
 import {IDProvider} from "@/app/context/customerIdProvider";
 import {DataProvider} from "@/app/context/customerData";
+import { ViewProvider } from "@/app/context/toggleContext";
 
 
 const _Nunito:NextFont =  Nunito({
@@ -21,6 +22,8 @@ const DashboardLayout = ({children}: {children: React.ReactNode}) => {
             {/*<DataProvider >*/}
 
             <CustomerContextProvider>
+                <ViewProvider>
+
                 <div  style={{fontFamily:_Nunito.style.fontFamily}}
                       className='flex min-h-screen  mx-auto w-[96%] text-gray-950'>
                     {/* SideBar */}
@@ -34,6 +37,8 @@ const DashboardLayout = ({children}: {children: React.ReactNode}) => {
 
                     </main>
                 </div>
+                </ViewProvider>
+
             </CustomerContextProvider>
             {/*</DataProvider>*/}
 
