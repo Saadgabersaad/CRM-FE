@@ -65,6 +65,17 @@ class ApiService {
             console.error('Error edit customer:', error);
             throw error;
         }
+    }async updateLeadStatus(id: number | null, values: { status: string }) {
+        try {
+            const response = await axios.patch(
+                `${this._basePath}leads/${id}`,
+                values
+            );
+            return response.data;
+        } catch (error) {
+            console.error('Error edit customer:', error);
+            throw error;
+        }
     }
 
     async deleteCustomer(id:number) {

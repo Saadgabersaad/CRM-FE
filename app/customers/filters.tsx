@@ -37,7 +37,7 @@ export default function SplitButton({onFilters}:{onFilters:any}) {
     const [selectedIndex, setSelectedIndex] = React.useState(0);
 
     const handleClick = () => {
-        console.info(`You clicked ${options[selectedIndex]}`);
+        console.info(`You clicked ${options[selectedIndex].label}`);
 
     };
 

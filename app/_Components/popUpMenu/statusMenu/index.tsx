@@ -86,8 +86,16 @@ export default function StatusMenu({ initialStatus, initialState }: StatusMenuPr
     const updateStatus = useCallback(
         async (newStatus: string) => {
             try {
+                if (pathname === '/customers') {
                 await ApiService.updateCustomerStatus(selectedId, { status: newStatus });
-                console.log('Status updated successfully:', newStatus);
+                console.log('Status updated successfully:', newStatus);}
+                if (pathname==='/leads'){
+                    await ApiService.updateLeadStatus(selectedId, { status: newStatus });
+                }
+              // if (pathname==='/leads'){
+              //                   await ApiService.updateLeadStatus(selectedId, { status: newStatus });
+              //               }
+
             } catch (error) {
                 console.error('Failed to update status:', error);
             }

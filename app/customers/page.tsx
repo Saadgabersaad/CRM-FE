@@ -271,7 +271,7 @@ export default function Customers() {
     const [loading, setLoading] = useState(true);
     const {setSelectedId} = useIDContext(); // Access context to set selected ID
 
-    useEffect(() => {
+
         const fetchData = async () => {
             try {
                 const response = await ApiService.getCustomers();
@@ -297,6 +297,7 @@ export default function Customers() {
                 setLoading(false);
             }
         };
+    useEffect(() => {
         fetchData();
     }, []);
 
@@ -544,7 +545,7 @@ export default function Customers() {
                                             borderBottomRightRadius: '4px',
 
                                         }} padding="none" align="left">
-                                            <LongMenu   id={row.id}/>
+                                            <LongMenu  data={fetchData}  id={row.id}/>
                                             {/*comment={row.comments}*/}
                                         </TableCell>
 

@@ -17,7 +17,7 @@ interface Option {
     action: string;
 }
 
-export default function LongMenu({ id }: { id: number }) {
+export default function LongMenu({ id,data }: { id: number,data:any }) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const router = useRouter();
@@ -97,6 +97,7 @@ export default function LongMenu({ id }: { id: number }) {
     const handleDelete = async (id: number) => {
         if (pathname === '/customers') {
             await ApiService.deleteCustomer(id);
+            data()
         } if(pathname === '/leads') {
             await ApiService.deleteLead(id);
         }if(pathname === '/accounts') {

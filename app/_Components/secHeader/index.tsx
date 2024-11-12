@@ -8,7 +8,8 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import SelectedButton from "@/app/_Components/secHeader/groupButton";
-
+import { TableOfContents,Rows2  } from 'lucide-react';
+import {usePathname} from "next/navigation";
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -54,7 +55,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
     export default function SearchAppBar() {
-    return (
+        const pathname = usePathname()
+
+        return (
         <Box sx={{ width:'100%',right:'0',zIndex:'50',paddingLeft:'0px' }}>
             <AppBar position="static" color='transparent'  style={{boxShadow:'none'}}>
 
@@ -70,6 +73,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
                     </Typography>
+
+                    {pathname==='/leads'&&<div className={'flex gap-2 '}>
+                        <button className='secondaryColor mainColor p-3 rounded-lg'>
+                            <TableOfContents strokeWidth={4}/>
+                        </button>
+                        <button className='secondaryColor mainColor p-3 rounded-lg'>
+                            <Rows2 strokeWidth={4}/>
+                        </button>
+                    </div>}
 
                     <Search >
                         <SearchIconWrapper>

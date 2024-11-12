@@ -143,6 +143,8 @@
 //     );
 // }
 //
+
+
 'use client';
 
 import React, { useState, useMemo, MouseEvent } from 'react';
@@ -162,10 +164,10 @@ interface StatusMenuProps {
 }
 
 const stateOptions: Option[] = [
-    { label: "(Lsp)", backgroundColor: '#eef5f0', color: "#589E67" },
-    { label: "Customer service", backgroundColor: '#EDF2FE', color: "#4976F4" },
-    { label: "Medical", backgroundColor: '#F7F7E8', color: "#B1AB1D" },
-    { label: "Sales", backgroundColor: '#F4EDF7', color: "#954BAF" },
+    { id:0, label: "(Lsp)", backgroundColor: '#eef5f0', color: "#589E67" },
+    { id:1,label: "Customer service", backgroundColor: '#EDF2FE', color: "#4976F4" },
+    { id:2,label: "Medical", backgroundColor: '#F7F7E8', color: "#B1AB1D" },
+    { id:3,label: "Sales", backgroundColor: '#F4EDF7', color: "#954BAF" },
 ];
 
 const getStyles = (label: string, options: Option[]) => {
