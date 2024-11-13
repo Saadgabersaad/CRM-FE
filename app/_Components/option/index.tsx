@@ -9,6 +9,8 @@ import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import ModeCommentOutlinedIcon from '@mui/icons-material/ModeCommentOutlined';
 import ApiService from '@/app/services/api.service';
 import { usePathname, useRouter } from 'next/navigation';
+import {useView} from "@/app/context/toggleContext";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 
 const ITEM_HEIGHT = 48;
 
@@ -61,8 +63,9 @@ export default function LongMenu({ id,data }: { id: number,data:any }) {
 
         switch (action) {
             case 'addComment':
+                if (pathname==="/customers") {
                 router.push("/customers/profile?tab=2");
-                console.log('Add Comment:');
+                console.log('Add Comment:');}
                 break;
             case 'visitProfile':
                 router.push(`/customers/profile`);
@@ -100,14 +103,33 @@ export default function LongMenu({ id,data }: { id: number,data:any }) {
             data()
         } if(pathname === '/leads') {
             await ApiService.deleteLead(id);
+            data()
+
         }if(pathname === '/accounts') {
             await ApiService.deleteAccount(id);
+            data()
+
         }
         handleClose();
     };
+    const {view}=useView()
 
     return (
         <div>
+            {view==="viewOne"&&
+
+                <IconButton
+                    aria-label="more"
+                    id="long-button"
+                    aria-controls={open ? 'long-menu' : undefined}
+                    aria-expanded={open ? 'true' : undefined}
+                    aria-haspopup="true"
+                    onClick={handleClick}
+                >
+                    {view==="viewOne"&& <ModeCommentOutlinedIcon sx={{ marginRight: '5px', padding: '1px' }} fontSize="small"/>}
+                </IconButton>
+
+               }
             <IconButton
                 aria-label="more"
                 id="long-button"
@@ -116,7 +138,7 @@ export default function LongMenu({ id,data }: { id: number,data:any }) {
                 aria-haspopup="true"
                 onClick={handleClick}
             >
-                <MoreVertIcon />
+                {view==="viewOne"? <SettingsOutlinedIcon/> :<MoreVertIcon/>}
             </IconButton>
             <Menu
                 id="long-menu"
@@ -139,16 +161,18 @@ export default function LongMenu({ id,data }: { id: number,data:any }) {
                         sx={{ color: '#3F8CFF', fontSize: '12px', fontWeight: '600' }}
                         onClick={() => handleAction(option.action)}
                     >
-                        {option.label === 'Add Comment' && (
+                        {option.label === 'Add Comment' && view!=='viewOne' &&
+                        (
                             <ModeCommentOutlinedIcon
                                 sx={{ marginRight: '5px', padding: '1px' }}
                                 fontSize="small"
                             />
                         )}
-                        {option.label}
+                        { option.label}
                     </MenuItem>
                 ))}
                 <Divider />
+
                 <MenuItem
                     sx={{ color: 'red', fontSize: '12px' }}
                     onClick={() => handleAction('deleteCustomer')}

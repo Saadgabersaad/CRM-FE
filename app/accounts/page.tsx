@@ -246,28 +246,31 @@ export default function Leads() {
     const [loading, setLoading] = useState(true);
     const {setSelectedId} = useIDContext(); // Access context to set selected ID
 
+
+    const fetchAccountsData = async () => {
+        try {
+            const response = await ApiService.getAccounts();
+            const data = response.data.data.map((item:any) =>
+                createData(
+                    item.id,
+                    item.name,
+                    item.industry,
+                    item.annual_revenue,
+                    item.status,
+                    item.comment,
+                    item.contacts,
+                    item.assigned_to,
+                )
+            );
+            setRows(data);
+        } catch (error) {
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchAccountsData = async () => {
-            try {
-                const response = await ApiService.getAccounts();
-                const data = response.data.data.map((item:any) =>
-                    createData(
-                        item.id,
-                        item.name,
-                        item.industry,
-                        item.annual_revenue,
-                        item.status,
-                        item.comment,
-                        item.contacts,
-                        item.assigned_to,
-                    )
-                );
-                setRows(data);
-            } catch (error) {
-            } finally {
-                setLoading(false);
-            }
-        };
+
         fetchAccountsData();
     }, []);
 
@@ -372,28 +375,6 @@ export default function Leads() {
                                 const isItemSelected = selected.includes(row.id);
                                 const labelId = `enhanced-table-checkbox-${index}`;
 
-                                // let interestColor = "";
-                                // let ArrowIcon = ArrowUp;
-                                //
-                                // if (row.interest_level === "high") {
-                                //     interestColor = "text-green-500";
-                                //     ArrowIcon = ArrowUp;
-                                // } else if (row.interest_level === "medium") {
-                                //     interestColor = "text-yellow-500";
-                                //     ArrowIcon = ArrowUp;
-                                // } else if (row.interest_level === "low") {
-                                //     interestColor = "text-red-500";
-                                //     ArrowIcon = ArrowDown;
-                                // }
-                                //
-                                // let sourceColor = "";
-                                // if (row.source === "website") {
-                                //     sourceColor = "text-blue-500";
-                                // } else if (row.source === "referral") {
-                                //     sourceColor = "text-green-500";
-                                // } else if (row.source === "event") {
-                                //     sourceColor = "text-purple-500";
-                                // }
 
                                 return (
                                     <TableRow
@@ -556,7 +537,9 @@ export default function Leads() {
                                             borderBottomRightRadius: '4px',
 
                                         }} padding="none" align="left">
-                                            <LongMenu   id={row.id}/>
+                                            <LongMenu
+                                                data={fetchAccountsData}
+                                                id={row.id}/>
                                             {/*comment={row.field}*/}
                                         </TableCell>
 

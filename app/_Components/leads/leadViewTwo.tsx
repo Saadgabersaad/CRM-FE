@@ -156,7 +156,6 @@ const headCells: readonly HeadCell[] = [
 interface EnhancedTableProps {
     numSelected: number;
     onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
-    onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
     order: Order;
     orderBy: string;
     rowCount: number;
@@ -223,30 +222,13 @@ interface EnhancedTableToolbarProps {
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     const { numSelected } = props;
     return (
-        <Toolbar
-            sx={[
+        <Toolbar  sx={[
                 {
                     pl: { sm: 2 },
                     pr: { xs: 1, sm: 1 },
                 },
                 numSelected > 0
-            ]}
-        >
-
-
-            {/*<Tooltip className='flex flex-row items-center' title="Filter list">*/}
-            {/*    <IconButton>*/}
-            {/*        <FilterListIcon />*/}
-            {/*    </IconButton>*/}
-
-            {/*    <Typography*/}
-
-            {/*        variant="subtitle2"*/}
-            {/*    >*/}
-            {/*        Sort By*/}
-            {/*    </Typography>*/}
-            {/*</Tooltip>*/}
-
+            ]}>
         </Toolbar>
     );
 }
@@ -262,32 +244,35 @@ export default function LeadsviewTwo() {
     const {setSelectedId} = useIDContext(); // Access context to set selected ID
 
 
+
+    const fetchLeadData = async () => {
+        try {
+            const response = await ApiService.getLeads();
+            const data = response.data.data.map((item:any) =>
+                createData(
+                    item.id,
+                    item.name,
+                    item.email,
+                    item.phone,
+                    item.source,
+                    item.interest_level,
+                    item.status,
+                    item.assigned_to,
+                    item.created,
+                    item.field
+                )
+            );
+            setRows(data);
+            console.log(data)
+        } catch (error) {
+            console.error('Failed to fetch customers:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchLeadData = async () => {
-            try {
-                const response = await ApiService.getLeads();
-                const data = response.data.data.map((item:any) =>
-                    createData(
-                        item.id,
-                        item.name,
-                        item.email,
-                        item.phone,
-                        item.source,
-                        item.interest_level,
-                        item.status,
-                        item.assigned_to,
-                        item.created,
-                        item.field
-                    )
-                );
-                setRows(data);
-                console.log(data)
-            } catch (error) {
-                console.error('Failed to fetch customers:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
+
         fetchLeadData();
     }, []);
 
@@ -304,14 +289,14 @@ export default function LeadsviewTwo() {
 
 
 
-    const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.checked) {
-            const newSelected = rows.map((n) => n.id);
-            setSelected(newSelected);
-            return;
-        }
-        setSelected([]);
-    };
+    // const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     if (event.target.checked) {
+    //         const newSelected = rows.map((n) => n.id);
+    //         setSelected(newSelected);
+    //         return;
+    //     }
+    //     setSelected([]);
+    // };
 
     const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
         setSelectedId(id);
@@ -374,7 +359,6 @@ export default function LeadsviewTwo() {
                             numSelected={selected.length}
                             order={order}
                             orderBy={orderBy}
-                            onSelectAllClick={handleSelectAllClick}
                             onRequestSort={handleRequestSort}
                             rowCount={rows.length}
 
@@ -548,6 +532,7 @@ export default function LeadsviewTwo() {
 
                                         }} padding="none" align="left">
                                             <LongMenu
+                                                data={fetchLeadData}
                                                 id={row.id}/>
                                         </TableCell>
 

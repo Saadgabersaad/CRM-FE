@@ -1,11 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import {
-    OutlinedInput, InputLabel,InputAdornment, FormControl,
-    TextField, Autocomplete,
-} from '@mui/material';
+import {OutlinedInput, InputLabel,InputAdornment, FormControl,} from '@mui/material';
 import AddImageBtn from '@/app/customers/add-customer/addImage';
-import Button from '@mui/joy/Button';
 import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
 import ApiService from '@/app/services/api.service';
@@ -48,7 +44,7 @@ export default function AddAccounts({ mode, selectedId,contact,submit }:{mode:st
     }, [mode, selectedId]);
 
 
-    const handleBackClick = () => router.back();
+    // const handleBackClick = () => router.back();
 
     if (loading) return <div className="loader"></div>;
 

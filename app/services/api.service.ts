@@ -156,12 +156,12 @@ class ApiService {
             value,
         );
     };
-    async postAccountContact(value:string) {
-        return await axios.post(
-            this._basePath + 'accounts',
-            value,
-        );
-    };
+    // async postAccountContact(value:string) {
+    //     return await axios.post(
+    //         this._basePath + 'accounts',
+    //         value,
+    //     );
+    // };
     async editAccount(id: number |null, values:string ) {
         try {
             const response = await axios.put(

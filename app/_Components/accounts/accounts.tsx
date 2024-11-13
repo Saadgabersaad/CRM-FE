@@ -25,7 +25,12 @@
                 status: '',
                 assigned_to:'',
                 comment:'',
-                contacts: ['']
+                contacts: [{
+                    name:'',
+                    email:'',
+                    phone:'',
+                    position:''
+                }]
             },
             onSubmit: async (values) => handleSubmit(values),
         });
@@ -72,27 +77,97 @@
         return (
 
             <>
-                <div className='  flex flex-col gap-5 py-7 rounded w-full '>
 
-                    {contacts.length > 0 ? contacts.map((contact, index) => (
-                        <AddAccounts
-                            key={index}
-                            contact={contact}
-                            mode={mode}
-                            selectedId={selectedId}
-                        />
-                    )) : <AddAccounts
-                        submit={formik.handleSubmit}
-                        mode={mode}
-                        selectedId={selectedId}
-                    />}
-                </div>
 
         <form
             className='w-full'
             onSubmit={formik.handleSubmit}
         >
 
+            <div className='  flex flex-col tertiary-color  gap-5 py-7 rounded w-full '>
+                <AddImageBtn/>
+
+                <div className='flex justify-around tertiary-color my-5 gap-6'>
+                    <div className='w-full row'>
+                        <div className='w-1/5 mb-5'>
+                            <FormControl fullWidth sx={{m: 1}}>
+                                <InputLabel htmlFor="contact-name">Contact Name</InputLabel>
+                                <OutlinedInput
+                                    sx={{backgroundColor: 'white'}}
+                                    placeholder='Contact Name'
+                                    id="contact-name"
+                                    label="contact-name"
+                                    name="contacts[0].name"
+                                    value={formik.values.contacts[0]?.name || ''}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    type='text'
+                                />
+                            </FormControl>
+                        </div>
+
+                        <div className='w-1/5 mb-5'>
+                            <FormControl fullWidth sx={{m: 1}}>
+                                <InputLabel htmlFor="contact-position">Contact Position</InputLabel>
+                                <OutlinedInput
+                                    placeholder='Contact Position'
+                                    sx={{backgroundColor: 'white'}}
+                                    id="contact-position"
+                                    label="Contact Position"
+                                    name="contacts[0].position"
+                                    value={formik.values.contacts[0]?.position || ''}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    type='text'
+                                />
+                            </FormControl>
+                        </div>
+
+                        <div className='w-1/5 mb-5'>
+                            <FormControl fullWidth sx={{m: 1}}>
+                                <InputLabel htmlFor="email">Contact Email</InputLabel>
+                                <OutlinedInput
+                                    placeholder='Add Contact Email'
+                                    sx={{backgroundColor: 'white'}}
+                                    id="email"
+                                    label="Contact Email"
+                                    name="contacts[0].email"
+                                    value={formik.values.contacts[0]?.email || ''}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    type='email'
+                                />
+                            </FormControl>
+                        </div>
+
+                        <div className='w-1/5 mb-5'>
+                            <FormControl fullWidth sx={{m: 1}}>
+                                <InputLabel htmlFor="contact-phone">Contact Phone Number</InputLabel>
+                                <OutlinedInput
+                                    placeholder='Contact Phone Number'
+                                    sx={{backgroundColor: 'white'}}
+                                    id="contact-phone"
+                                    label="Contact Phone Number"
+                                    name="contacts[0].phone"
+                                    value={formik.values.contacts[0]?.phone || ''}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    type='text'
+                                />
+                            </FormControl>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div className='flex items-center justify-end gap-5'>
+
+                    <input type='submit'
+                           className={`${selectedId ? 'btn-danger' : 'btn-main'}`}
+                           value={selectedId ? 'Remove Account' : 'Add Additional Account'}/>
+                </div>
+
+            </div>
 
             <div className='flex flex-col justify-around tertiary-color px-5 py-7 rounded   my-5 gap-6 '>
                 <AddImageBtn/>
@@ -103,65 +178,65 @@
                         <div className='w-1/5   mb-5 '>
                             <FormControl fullWidth sx={{m: 1}}>
                                 <InputLabel htmlFor="company-name">Company Name</InputLabel>
-                                    <OutlinedInput
+                                <OutlinedInput
 
-                                        sx={{backgroundColor: 'white'}}
-                                        placeholder='Add company Name'
-                                        id="company-name"
-                                        startAdornment={<InputAdornment position="start"></InputAdornment>}
-                                        label="company_name"
-                                        name="name"
-                                        value={formik.values.name}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        type='text'
-                                    />
-                                </FormControl>
-                            </div>
-
-                            <div className='w-1/5 mb-5'>
-                                <FormControl fullWidth sx={{m: 1}}>
-                                    <InputLabel htmlFor="email">Revenue </InputLabel>
-                                    <OutlinedInput
-                                        placeholder='Add Revenue'
-                                        sx={{backgroundColor: 'white'}}
-                                        id="annual_revenue"
-                                        startAdornment={<InputAdornment position="start"></InputAdornment>}
-                                        label="Revenue"
-                                        name="annual_revenue"
-                                        value={formik.values.annual_revenue}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        type='text'
-                                    />
-                                </FormControl>
-                            </div>
+                                    sx={{backgroundColor: 'white'}}
+                                    placeholder='Add company Name'
+                                    id="company-name"
+                                    startAdornment={<InputAdornment position="start"></InputAdornment>}
+                                    label="company_name"
+                                    name="name"
+                                    value={formik.values.name}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    type='text'
+                                />
+                            </FormControl>
                         </div>
 
-
-                        <div className='w-full row  '>
-                            <div className='w-1/5 mb-8 mt-2.5 ms-2'>
-                                <Autocomplete
-                                    value={formik.values.industry}
-                                    onChange={(event, value) => formik.setFieldValue("industry", value)}
-                                    onBlur={formik.handleBlur}
+                        <div className='w-1/5 mb-5'>
+                            <FormControl fullWidth sx={{m: 1}}>
+                                <InputLabel htmlFor="email">Revenue </InputLabel>
+                                <OutlinedInput
+                                    placeholder='Add Revenue'
                                     sx={{backgroundColor: 'white'}}
-                                    options={['1', '2', '3']}
-                                    renderInput={(params) => <TextField {...params} name='industry'
-                                                                        label="industry"/>}
-                                />
-                            </div>
-
-                            <div className='w-1/5 mb-8 mt-2.5'>
-                                <Autocomplete
-                                    value={formik.values.status}
-                                    onChange={(event, value) => formik.setFieldValue("status", value)}
+                                    id="annual_revenue"
+                                    startAdornment={<InputAdornment position="start"></InputAdornment>}
+                                    label="Revenue"
+                                    name="annual_revenue"
+                                    value={formik.values.annual_revenue}
+                                    onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
-                                    sx={{backgroundColor: 'white'}}
-                                    options={['active', 'inactive']}
-                                    renderInput={(params) => <TextField {...params} name='status'
-                                                                        label="Status"/>}
+                                    type='text'
                                 />
+                            </FormControl>
+                        </div>
+                    </div>
+
+
+                    <div className='w-full row  '>
+                        <div className='w-1/5 mb-8 mt-2.5 ms-2'>
+                            <Autocomplete
+                                value={formik.values.industry}
+                                onChange={(event, value) => formik.setFieldValue("industry", value)}
+                                onBlur={formik.handleBlur}
+                                sx={{backgroundColor: 'white'}}
+                                options={['1', '2', '3']}
+                                renderInput={(params) => <TextField {...params} name='industry'
+                                                                    label="industry"/>}
+                            />
+                        </div>
+
+                        <div className='w-1/5 mb-8 mt-2.5'>
+                            <Autocomplete
+                                value={formik.values.status}
+                                onChange={(event, value) => formik.setFieldValue("status", value)}
+                                onBlur={formik.handleBlur}
+                                sx={{backgroundColor: 'white'}}
+                                options={['active', 'inactive']}
+                                renderInput={(params) => <TextField {...params} name='status'
+                                                                    label="Status"/>}
+                            />
                             </div>
 
                             <div className='w-1/5 mb-5'>
@@ -188,7 +263,8 @@
                     <TextareaDecorators/>
 
                     <div className='flex items-center justify-end gap-5'>
-                        <Button className='py-3 px-6 font-bold' variant="outlined" onClick={handleBackClick}>Cancel</Button>
+                        <Button className='py-3 px-6 font-bold' variant="outlined"
+                                onClick={handleBackClick}>Cancel</Button>
                         <input type='submit'
                                className='mainBackgroundColor font-bold text-white cursor-pointer rounded py-3 px-6'
                                value={selectedId ? 'Edit Account' : 'Add Account'}/>
@@ -196,7 +272,8 @@
                 </div>
 
 
-            </form>
-            </>
-        );
+        </form>
+    </>
+    )
+        ;
     }

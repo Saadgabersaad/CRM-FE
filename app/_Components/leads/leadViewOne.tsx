@@ -25,6 +25,7 @@ import ModeCommentOutlinedIcon from '@mui/icons-material/ModeCommentOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
 import CollapsibleTable from "@/app/leads/collapse";
+import LongMenu from "@/app/_Components/option";
 
 
 interface Data {
@@ -125,55 +126,44 @@ export default function LeadsViewOne() {
     const {setSelectedId} = useIDContext(); // Access context to set selected ID
     const [open, setOpen] = useState(false);
 
+
+
+    const fetchLeadData = async () => {
+        try {
+            const response = await ApiService.getLeads();
+            const data = response.data.data.map((item:any) =>
+                createData(
+                    item.id,
+                    item.name,
+                    item.email,
+                    item.phone,
+                    item.source,
+                    item.interest_level,
+                    item.status,
+                    item.assigned_to,
+                    item.created,
+                    item.field
+                )
+            );
+            setRows(data);
+            console.log(data)
+        } catch (error) {
+            console.error('Failed to fetch customers:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchLeadData = async () => {
-            try {
-                const response = await ApiService.getLeads();
-                const data = response.data.data.map((item:any) =>
-                    createData(
-                        item.id,
-                        item.name,
-                        item.email,
-                        item.phone,
-                        item.source,
-                        item.interest_level,
-                        item.status,
-                        item.assigned_to,
-                        item.created,
-                        item.field
-                    )
-                );
-                setRows(data);
-                console.log(data)
-            } catch (error) {
-                console.error('Failed to fetch customers:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
+
         fetchLeadData();
     }, []);
 
 
 
     const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
-        const selectedIndex = selected.indexOf(id);
         setSelectedId(id);
-        let newSelected: readonly number[] = [];
 
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, id);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            );
-        }
-        setSelected(newSelected);
     };
 
     const handleChangePage = (event: unknown, newPage: number) => {
@@ -399,14 +389,12 @@ export default function LeadsViewOne() {
                                                 borderBottomRightRadius: '4px',
 
                                             }} padding="none" align="left">
-                                                <ModeCommentOutlinedIcon
-                                                    sx={{ marginRight: '5px', padding: '1px' }}
-                                                    fontSize="small"
-                                                />
 
-                                                <SettingsOutlinedIcon/>
 
-                                                {/*<LongMenu id={row.id}/>*/}
+
+                                                <LongMenu
+                                                    data={fetchLeadData}
+                                                    id={row.id}/>
                                                 {/*comment={row.field}*/}
                                             </TableCell>
 

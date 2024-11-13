@@ -7,11 +7,12 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
-import SelectedButton from "@/app/_Components/secHeader/groupButton";
-import { TableOfContents,Rows2  } from 'lucide-react';
 import {usePathname} from "next/navigation";
-import {useToggle, useView} from "@/app/context/toggleContext";
-import {useEffect, useState} from "react";
+import { useView} from "@/app/context/toggleContext";
+import {useState} from "react";
+import ViewAgendaOutlinedIcon from '@mui/icons-material/ViewAgendaOutlined';
+import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
+import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -56,18 +57,19 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
         },
     },
 }));
+
     export default function SearchAppBar() {
         const pathname = usePathname()
         const {view , setView} = useView();
-        // Handle button clicks to switch views
+        const [activeButton, setActiveButton] = useState(view);
 
-        // Update view when the buttons are clicked
         const handleViewOneClick = () => {
+            setActiveButton('viewOne');
             setView('viewOne');
             console.log(view )
         };
         const handleViewTwoClick = () => {
-
+            setActiveButton('viewTwo');
             setView('viewTwo');
             console.log(view )
         };
@@ -91,26 +93,31 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
                     </Typography>
 
-                    {pathname==='/leads'&&<div className={'flex gap-2 '}>
-                        <button
-                            onClick={handleViewOneClick}
-                            className='secondaryColor mainColor p-3 rounded-lg'>
-                            <TableOfContents strokeWidth={3.5}/>
-                        </button>
+                    {(pathname==='/leads' || pathname==='/accounts') && (<div className={'flex gap-2 '}>
+
                         <button
                             onClick={handleViewTwoClick}
-                            className='secondaryColor mainColor p-3 rounded-lg'>
-                            <Rows2 strokeWidth={3.5}/>
-                        </button>
-                    </div>}
+                            className={`p-3 ${activeButton === 'viewTwo' ? 'secondaryColor mainColor rounded-lg' : 'text-color'}`}
+                        >
+                            <FormatListBulletedRoundedIcon/>
 
-                    <Search >
+                        </button>
+                        <button
+                            onClick={handleViewOneClick}
+                            className={`p-3 ${activeButton === 'viewOne' ? 'secondaryColor mainColor rounded-lg' : 'text-color'}`}
+                        >
+                            {activeButton === 'viewOne' ? <ViewAgendaIcon/> : <ViewAgendaOutlinedIcon/>}
+
+                        </button>
+                    </div>)}
+
+                    <Search>
                         <SearchIconWrapper>
-                            <SearchIcon color='disabled' />
+                            <SearchIcon color='disabled'/>
                         </SearchIconWrapper>
                         <StyledInputBase className='border rounded-md    h-[50px] border-gray-300'
-                            placeholder="Search…"
-                            inputProps={{ 'aria-label': 'search' }}
+                                         placeholder="Search…"
+                                         inputProps={{ 'aria-label': 'search' }}
                         />
                     </Search>
 
