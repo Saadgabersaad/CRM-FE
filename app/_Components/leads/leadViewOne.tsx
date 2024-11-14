@@ -352,7 +352,7 @@ export default function LeadsViewOne() {
                                                         Assigned to :
                                                     </span>
                                                     <span className='font-bold'>
-                                                       Z3bola {row.assigned_to}
+                                                       {row.assigned_to}
                                                         {/*<ClientMenu assign={row.assigned_to}/>*/}
                                                     </span>
                                                 </div>
