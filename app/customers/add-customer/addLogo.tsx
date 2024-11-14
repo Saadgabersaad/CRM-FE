@@ -13,7 +13,7 @@ const AddLogo = () => {
                style={{ display: "none" }}
                type="file"
               />
-             <label className='flex items-center justify-between btn px-2 py-4 gap-3  rounded border-spacing-4  text-gray-500 border-2 border-blue-400 border- border-dashed btn-primary' htmlFor="file-input">
+             <label className='rows items-center  btn px-2 py-4 gap-3  rounded border-spacing-4  text-gray-500 border-2 border-blue-400 border- border-dashed btn-primary' htmlFor="file-input">
                  <Paperclip size='24px' className='text-primary'/>Add Logo</label>
 
 

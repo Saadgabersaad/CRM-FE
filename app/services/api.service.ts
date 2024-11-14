@@ -156,12 +156,7 @@ class ApiService {
             value,
         );
     };
-    // async postAccountContact(value:string) {
-    //     return await axios.post(
-    //         this._basePath + 'accounts',
-    //         value,
-    //     );
-    // };
+
     async editAccount(id: number |null, values:string ) {
         try {
             const response = await axios.put(
@@ -174,9 +169,20 @@ class ApiService {
             throw error;
         }
     }
+
     async deleteAccount(id:number) {
         try {
             const response = await axios.delete(`${this._basePath}accounts/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error deleting customer:', error);
+            throw error;
+        }
+    }
+
+    async deleteAccountContact(id:number,cId:number) {
+        try {
+            const response = await axios.delete(`${this._basePath}accounts/${id}/contacts/${cId}`);
             return response.data;
         } catch (error) {
             console.error('Error deleting customer:', error);

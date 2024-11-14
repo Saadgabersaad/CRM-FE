@@ -15,7 +15,7 @@ const Back = () => {
     };
 
     return (
-        <div className='flex justify-between w-full z-50'>
+        <div className='rows-between  w-full z-50'>
 
 
             <button

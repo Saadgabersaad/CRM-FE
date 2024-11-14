@@ -72,6 +72,15 @@ span .MuiListItemText-primary {
   color: #515B6F;
 }
 
+.flex-center{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+}
+
+
+
 .row{
   display: flex;
   flex-direction: row;

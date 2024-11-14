@@ -55,7 +55,7 @@ export default function SelectedButton({ onFilter }: SelectedButtonProps) {
                 alignItems: 'center',
 
             }}
-            className="mainColor flex flex-row rounded gap-0.5 font-[700] items-center justify-center secondaryColor px-1.5 p-1"
+            className="mainColor  flex-row rounded gap-0.5 font-[700] items-center  secondaryColor px-1.5 p-1"
         >
             {buttonConfigs.map((config, index) => (
                 <div className="border-0 rounded" key={index}>

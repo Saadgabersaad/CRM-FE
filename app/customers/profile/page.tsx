@@ -101,7 +101,7 @@ const pathname =usePathname()
             <div className="w-1/5  flex flex-col  px-5 gap-2.5 tertiary-color mb-[30px]   ">
 
                 <div className='border-b-2 pb-4'>
-                    <div className='flex justify-between w-full items-center mb-2.5  pt-7 '>
+                    <div className='rows w-full items-center mb-2.5  pt-7 '>
                         <div><Image src={Logo} alt="Logo" className='w-[72px] h-[72px] rounded-full overflow-clip'/></div>
                         <div>
                             <button  onClick={() => handleEdit(selectedId)} className='z-50 mainColor flex items-center justify-end gap-2'>

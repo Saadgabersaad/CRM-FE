@@ -501,7 +501,7 @@ export default function Leads() {
                                             <span className={`
                                             ${row.status ==='active'?'bg-[#ccf0eb]':'bg-red-400'}
                                             ${row.status ==='active'?'text-[#00B69B]':'text-[#EF3826]'}
-                                             rounded flex justify-center items-center p-2 gap-1.5 font-bold `}>
+                                             rounded  items-center p-2 gap-1.5 font-bold `}>
                                                 {row.status}
                                             </span>
 

@@ -188,7 +188,7 @@ export default function BasicTabs({data,defaultTab,id}:{data:any,defaultTab:any,
                             return (
 
                                 <div key={index} className='Back-ground-dark10 flex flex-col justify-evenly gap-2  p-3.5 rounded my-3.5 '>
-                                    <div className='flex justify-between dark10'>
+                                    <div className='rows-between  dark10'>
                                         <Typography variant='subtitle1' className='font-bold'>{comment.by}</Typography>
                                         <Typography className='text-color' variant='subtitle1'>
                                             {comment.created}

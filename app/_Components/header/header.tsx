@@ -35,7 +35,7 @@ const Header: React.FC = () => {
 
             )}
 
-            <div className="flex justify-between items-start">
+            <div className="rows-between  items-start">
                 <div className="flex flex-col">
                     {pageTitles[pathname] && (
                         <Typography
