@@ -16,19 +16,15 @@ import TextareaDecorators from "@/app/customers/add-customer/textArea";
 
 const EditCustomer = () => {
 
-    const { selectedId } = useIDContext(); // Access the selected ID
-    const [loading, setLoading] = useState(true); // Track loading state
+    const { selectedId } = useIDContext();
+    const [loading, setLoading] = useState(true);
     const router = useRouter()
 
 
     const handleBackClick = () => {
-        router.back(); // Takes the user to the previous page
+        router.back();
     };
 
-    // async function handleSubmit(values: any,) {
-    //     console.log(values)
-    //     await ApiService.editCustomer(selectedId,values);
-    // }
 
     const formik  =  useFormik({
         initialValues:{
@@ -44,7 +40,7 @@ const EditCustomer = () => {
         onSubmit:async (values) => {
             try {
                 console.log('Edited values:', values);
-                await ApiService.editCustomer(selectedId, values); // Submit edited data
+                await ApiService.editCustomer(selectedId, values);
                 router.back();
             } catch (error) {
                 console.error('Failed to edit customer:', error);
@@ -60,7 +56,7 @@ const EditCustomer = () => {
                 const customerData = response.data.data;
 
                 if (customerData) {
-                    formik.setValues(customerData); // Update form values with fetched data
+                    formik.setValues(customerData);
                 }
             } catch (error) {
                 console.error('Failed to fetch customer data:', error);
@@ -148,46 +144,28 @@ const EditCustomer = () => {
                                     />
                                 </FormControl>
                             </div>
-                            <div className='w-1/5 mb-5'>
-                                <FormControl fullWidth sx={{m: 1}}>
-                                    <InputLabel htmlFor="address">Languages</InputLabel>
-                                    <OutlinedInput
-                                        placeholder='Languages'
-                                        sx={{backgroundColor: 'white'}}
-                                        id="Languages"
-                                        label="Languages"
-                                        name="Languages"
-                                        value={formik.values.address}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                    />
-                                </FormControl>
-                            </div>
-                            <div className='w-1/5 mb-5'>
-                                <FormControl fullWidth sx={{m: 1}}>
-                                    <InputLabel htmlFor="countery">country </InputLabel>
-                                    <OutlinedInput
-                                        placeholder='Add company address '
-                                        sx={{backgroundColor: 'white'}}
-                                        id="countery"
-                                        label="Address"
-                                        name="country"
-                                        value={formik.values.country}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                    />
-                                </FormControl>
-                            </div>
+
+                            {/*TODO Language endpoint Api*/}
+                            {/*<div className='w-1/5 mb-5'>*/}
+                            {/*    <FormControl*/}
+                            {/*        disabled*/}
+                            {/*        fullWidth sx={{m: 1}}>*/}
+                            {/*        <InputLabel htmlFor="address">Languages</InputLabel>*/}
+                            {/*        <OutlinedInput*/}
+                            {/*            placeholder='Languages'*/}
+                            {/*            sx={{backgroundColor: 'white'}}*/}
+                            {/*            id="Languages"*/}
+                            {/*            label="Languages"*/}
+                            {/*            name="Languages"*/}
+                            {/*            value={formik.values.languages}*/}
+                            {/*            onChange={formik.handleChange}*/}
+                            {/*            onBlur={formik.handleBlur}*/}
+                            {/*        />*/}
+                            {/*    </FormControl>*/}
+                            {/*</div>*/}
 
 
                         </div>
-                        {/*TODO*/}
-                        {/*<div className="row">*/}
-                        {/*    <Button className='py-3 px-6' variant="outlined" onClick={handleBackClick}>Cancel</Button>*/}
-                        {/*    <input type='submit'*/}
-                        {/*           className='mainBackgroundColor text-white cursor-pointer rounded py-3 px-6'*/}
-                        {/*           value='Save Customer'/>*/}
-                        {/*</div>*/}
                         <div><AddImageBtn/></div>
                         {/*TODO Edit customer logo and gap and padding*/}
 
@@ -268,7 +246,7 @@ const EditCustomer = () => {
                             </div>
 
                         </div>
-                        <TextareaDecorators/>
+                        <TextareaDecorators  id={selectedId}/>
                         <div className='flex items-center justify-end gap-5'>
                             <Button className='py-3 px-6' variant="outlined" onClick={handleBackClick}>Cancel</Button>
                             <input type='submit' className='mainBackgroundColor font-sans text-white cursor-pointer rounded py-3 px-6'

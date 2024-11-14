@@ -7,11 +7,9 @@ import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
-import {useContext} from "react";
-import {CustomerContext} from "@/app/context/CustomerContextProvider";
 
 export default function BasicButtons() {
-    const {setCustomer} = useContext(CustomerContext)
+    // const {setCustomer} = useContext(CustomerContext)
 
 
 
@@ -22,11 +20,11 @@ export default function BasicButtons() {
     const handleClick = () => {
         if ( pathname ==='/customers') {
             router.push('/customers/add-customer');
-            setCustomer(false);
+            // setCustomer(false);
         }
         if ( pathname ==='/customers/profile') {
             router.push('/customers/add-customer');
-            setCustomer(false);
+            // setCustomer(false);
         }
         if (pathname === '/leads') {
             router.push('/leads/add-lead');
@@ -36,9 +34,9 @@ export default function BasicButtons() {
             router.push('/accounts/add-account');
         }
     };
-    if (setCustomer===true) {
-        return <div className='loader'></div>
-    }
+
+       // <div className='loader'></div>
+
     return (
         <div className='flex flex-col gap-5 items-end justify-between'>
 

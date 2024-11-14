@@ -92,9 +92,7 @@ export default function StatusMenu({ initialStatus, initialState }: StatusMenuPr
                 if (pathname==='/leads'){
                     await ApiService.updateLeadStatus(selectedId, { status: newStatus });
                 }
-              // if (pathname==='/leads'){
-              //                   await ApiService.updateLeadStatus(selectedId, { status: newStatus });
-              //               }
+
 
             } catch (error) {
                 console.error('Failed to update status:', error);
@@ -125,22 +123,6 @@ export default function StatusMenu({ initialStatus, initialState }: StatusMenuPr
     });
 
     useEffect(() => {
-        const fetchCustomerData = async () => {
-            try {
-                const response = await ApiService.getCustomerById(selectedId);
-                const customerData = response.data.data;
-
-                if (customerData) {
-                    formik.setValues(customerData);
-                    if (selectedStatus !== initialStatus || selectedState !== initialState) {
-                        await updateStatus(pathname === '/customers' ? selectedStatus : selectedState);
-                    }
-                }
-            } catch (error) {
-                console.error('Failed to fetch customer data:', error);
-            }
-        };
-
         return () => setAnchorEl(null); // Cleanup anchor element on unmount
     }, [selectedId, selectedStatus, selectedState, initialStatus, initialState, updateStatus]);
 

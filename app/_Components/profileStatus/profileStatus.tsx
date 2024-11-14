@@ -20,8 +20,7 @@ const ProfileStatus = () => {
                 const response=    await ApiService.getCustomerById(selectedId);
                 const data = response.data.data
                 setProfileData(data);
-
-                console.log('Visit Customer Profile:',data);}
+            }
             catch (error) {
                 console.error('Failed to fetch customers:', error);
             } finally {
@@ -32,7 +31,6 @@ const ProfileStatus = () => {
     }, [selectedId]);
 
 
-console.log(profileData)
 
 
     if (loading) return <div className='loader'></div>;

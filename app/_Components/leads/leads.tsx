@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
 import ApiService from '@/app/services/api.service';
 
-export default function AddLeads({ mode, selectedId }:{mode:string,selectedId:number}) {
+export default function AddLeads({ mode, selectedId }:{mode:string,selectedId:number|null}) {
     const router = useRouter();
     const [loading, setLoading] = useState(mode === 'edit'); // Only show loader if editing
 
@@ -207,7 +207,7 @@ export default function AddLeads({ mode, selectedId }:{mode:string,selectedId:nu
             </div>
 
 
-            <TextareaDecorators/>
+            <TextareaDecorators id={null}/>
             <div className='flex items-center justify-end gap-5'>
                 <Button className='py-3 px-6 font-bold' variant="outlined" onClick={handleBackClick}>Cancel</Button>
                 <input type='submit'

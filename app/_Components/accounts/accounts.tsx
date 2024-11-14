@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
 import ApiService from '@/app/services/api.service';
 
-export default function Accounts({ mode, selectedId }:{mode:string,selectedId:number}) {
+export default function Accounts({ mode, selectedId }:{mode:string,selectedId:number|null}) {
     const router = useRouter();
     const [loading, setLoading] = useState(mode === 'edit'); // Only show loader if editing
     const [contacts, setContacts] = useState([]);

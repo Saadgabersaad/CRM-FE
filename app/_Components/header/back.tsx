@@ -15,7 +15,7 @@ const Back = () => {
     };
 
     return (
-        <div className='rows-between  w-full z-50'>
+        <div className='row-between w-full z-50'>
 
 
             <button

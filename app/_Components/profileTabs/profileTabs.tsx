@@ -6,8 +6,6 @@ import Typography from "@mui/material/Typography";
 import CollapsibleTable from "@/app/_Components/profileTabs/accountRows";
 import TextareaDecorators from "@/app/customers/add-customer/textArea";
 
-
-
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
@@ -37,12 +35,8 @@ function a11yProps(index: number) {
     };
 }
 
-
 export default function BasicTabs({data,defaultTab,id}:{data:any,defaultTab:any,id:number|null}) {
-
-
     const [value, setValue] = React.useState(defaultTab);
-    console.log(data)
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
@@ -168,7 +162,7 @@ export default function BasicTabs({data,defaultTab,id}:{data:any,defaultTab:any,
             </CustomTabPanel>
 
             <CustomTabPanel value={value} index={1}>
-                <CollapsibleTable data={data} />
+                <CollapsibleTable />
             </CustomTabPanel>
 
 
@@ -184,7 +178,6 @@ export default function BasicTabs({data,defaultTab,id}:{data:any,defaultTab:any,
                     {data?.comments && data?.comments.length > 0 ?
 
                         (  data.comments.map((comment:any,index:number)=>{
-                            console.log(comment)
                             return (
 
                                 <div key={index} className='Back-ground-dark10 flex flex-col justify-evenly gap-2  p-3.5 rounded my-3.5 '>

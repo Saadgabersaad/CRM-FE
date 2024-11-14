@@ -10,7 +10,6 @@ export default function TextareaDecorators({id}: { id:number|null }) {
 const router = useRouter()
 
     async function addComment(value:string,id:number|null) {
-        console.log(value)
         await ApiService.addComment(value,id);
         router.back()
     }

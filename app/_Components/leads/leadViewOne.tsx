@@ -21,8 +21,6 @@ import ResetFilter from "@/app/customers/resetFilter";
 import {useIDContext} from "@/app/context/customerIdProvider";
 import Image from "next/image";
 import Logo from "../../assets/beed83bf6aee26c5540858387e08bd9a.jpeg"
-import ModeCommentOutlinedIcon from '@mui/icons-material/ModeCommentOutlined';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
 import CollapsibleTable from "@/app/leads/collapse";
 import LongMenu from "@/app/_Components/option";
@@ -116,15 +114,12 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 }
 
 export default function LeadsViewOne() {
-    const [order, setOrder] = React.useState<Order>('asc');
-    const [orderBy, setOrderBy] = React.useState<keyof Data>('name');
     const [selected, setSelected] = React.useState<readonly number[]>([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [rows, setRows] = useState<Data[]>([]);
     const [loading, setLoading] = useState(true);
-    const {setSelectedId} = useIDContext(); // Access context to set selected ID
-    const [open, setOpen] = useState(false);
+    const {setSelectedId} = useIDContext()
 
 
 
@@ -146,7 +141,6 @@ export default function LeadsViewOne() {
                 )
             );
             setRows(data);
-            console.log(data)
         } catch (error) {
             console.error('Failed to fetch customers:', error);
         } finally {
@@ -190,13 +184,10 @@ export default function LeadsViewOne() {
             processedRow = processedRow.filter((row: Data) => row.source == leadTypeFilter);
         }
 
-
-
-
         return processedRow
-            .sort(getComparator(order, orderBy))
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-    }, [rows,statusFilter, leadTypeFilter, order, orderBy, page, rowsPerPage]);
+        //     .sort(getComparator( ))
+        //     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+    }, [rows,statusFilter, leadTypeFilter, page, rowsPerPage]);
 
     const handleResetFilters = () => {
         setStatusFilter("");
@@ -379,7 +370,7 @@ export default function LeadsViewOne() {
 
                                             }} padding="none" align="left">
                                             <span className='font-bold'>
-                                                <StatusMenu initialState={row.status}/></span>
+                                                <StatusMenu initialState={row.status} initialStatus={null}/></span>
 
                                             </TableCell>
                                             <TableCell sx={{
@@ -395,7 +386,6 @@ export default function LeadsViewOne() {
                                                 <LongMenu
                                                     data={fetchLeadData}
                                                     id={row.id}/>
-                                                {/*comment={row.field}*/}
                                             </TableCell>
 
                                         </TableRow>

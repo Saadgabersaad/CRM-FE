@@ -525,7 +525,7 @@ export default function Customers() {
                                             padding:'10px'
 
                                         }} padding="none" align="left">
-                                            <span>  <StatusMenu initialStatus={row.status}/></span>
+                                            <span>  <StatusMenu initialState={''} initialStatus={row.status}/></span>
 
                                         </TableCell>
 

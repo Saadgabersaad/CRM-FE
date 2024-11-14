@@ -117,7 +117,6 @@ export default function AddCustomer() {
                         </FormControl>
                     </div>
                     <div className='w-full mb-8 mx-2'>
-                        {/*<label htmlFor="type">Status</label>*/}
                         <Autocomplete
                             value={formik.values.status}
                             onChange={(event, value) => formik.setFieldValue("status", value)}
@@ -249,7 +248,7 @@ export default function AddCustomer() {
 
             <AddLogo/>
 
-            <TextareaDecorators/>
+            <TextareaDecorators  id={null}/>
             <div className='flex items-center justify-end gap-5'>
                 <Button  className='py-3 px-6' variant="outlined" onClick={handleBackClick}>Cancel</Button>
                 <input  type='submit' className='mainBackgroundColor text-white cursor-pointer rounded py-3 px-6'  value='Add Customer' />

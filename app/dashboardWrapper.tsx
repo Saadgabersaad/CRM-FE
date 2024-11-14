@@ -2,11 +2,9 @@
 import React from 'react'
 import MiniDrawer from "./_Components/Drawer/index";
 import Header from "@/app/_Components/header/header";
-import CustomerContextProvider from "@/app/context/CustomerContextProvider";
 import {Nunito} from 'next/font/google'
 import {NextFont} from "next/dist/compiled/@next/font";
 import {IDProvider} from "@/app/context/customerIdProvider";
-import {DataProvider} from "@/app/context/customerData";
 import { ViewProvider } from "@/app/context/toggleContext";
 
 
@@ -19,9 +17,8 @@ const DashboardLayout = ({children}: {children: React.ReactNode}) => {
 
     return (
         <IDProvider>
-            {/*<DataProvider >*/}
 
-            <CustomerContextProvider>
+            {/*<CustomerContextProvider>*/}
                 <ViewProvider>
 
                 <div  style={{fontFamily:_Nunito.style.fontFamily}}
@@ -39,8 +36,7 @@ const DashboardLayout = ({children}: {children: React.ReactNode}) => {
                 </div>
                 </ViewProvider>
 
-            </CustomerContextProvider>
-            {/*</DataProvider>*/}
+            {/*</CustomerContextProvider>*/}
 
         </IDProvider>
     )

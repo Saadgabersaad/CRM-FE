@@ -263,7 +263,6 @@ export default function LeadsviewTwo() {
                 )
             );
             setRows(data);
-            console.log(data)
         } catch (error) {
             console.error('Failed to fetch customers:', error);
         } finally {
@@ -499,7 +498,7 @@ export default function LeadsviewTwo() {
 
                                             }} padding="none" align="left">
                                             <span>
-                                                <ClientMenu assign={row.assigned_to}/></span>
+                                                <ClientMenu assignedTo={row.assigned_to}/></span>
                                         </TableCell>
 
                                         <TableCell sx={{
@@ -511,7 +510,7 @@ export default function LeadsviewTwo() {
 
                                         }} padding="none" align="left">
                                             <span className='font-bold'>
-                                                <StatusMenu initialState={row.status}/></span>
+                                                <StatusMenu initialState={row.status} initialStatus={null}/></span>
 
                                         </TableCell>
 
