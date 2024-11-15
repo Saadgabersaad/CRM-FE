@@ -17,6 +17,7 @@ const pageTitles: { [key: string]: string } = {
     '/leads': 'Leads',
     '/leads/edit-lead': 'Edit Lead',
     '/leads/add-lead': 'Add Lead',
+    '/accounts': 'Accounts',
     '/accounts/edit-account': 'Edit Account',
     '/accounts/add-account': 'Add Account',
 };

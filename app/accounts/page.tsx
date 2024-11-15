@@ -8,7 +8,7 @@ import AccountSecView from "@/app/_Components/accounts/accountSecView/accountSec
 const Page = () => {
     const { view } = useView();
 
-    return (view == 'viewOne' ? <AccountMainView /> : <AccountSecView/>);
+    return (view == 'viewOne' ? <AccountSecView/>  :  <AccountMainView />);
 }
 
 export default Page;

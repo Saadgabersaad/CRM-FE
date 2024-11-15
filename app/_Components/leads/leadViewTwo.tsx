@@ -275,8 +275,6 @@ export default function LeadsviewTwo() {
         fetchLeadData();
     }, []);
 
-
-
     const handleRequestSort = React.useCallback(
         (event: React.MouseEvent<unknown>, property: keyof Data) => {
             const isAsc = orderBy === property && order === 'asc';
@@ -285,17 +283,6 @@ export default function LeadsviewTwo() {
         },
         [order, orderBy]
     );
-
-
-
-    // const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     if (event.target.checked) {
-    //         const newSelected = rows.map((n) => n.id);
-    //         setSelected(newSelected);
-    //         return;
-    //     }
-    //     setSelected([]);
-    // };
 
     const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
         setSelectedId(id);

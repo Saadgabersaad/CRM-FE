@@ -15,7 +15,7 @@ import StatusMenu from "../popUpMenu/statusMenu/index";
 import TablePagination from '@mui/material/TablePagination';
 import SearchAppBar from "../secHeader";
 import SelectedButton from "@/app/_Components/secHeader/groupButton";
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import ApiService from "@/app/services/api.service";
 import ResetFilter from "@/app/customers/resetFilter";
 import {useIDContext} from "@/app/context/customerIdProvider";
@@ -68,58 +68,12 @@ function createData(
 }
 
 
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-    if (b[orderBy] < a[orderBy]) {
-        return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-        return 1;
-    }
-    return 0;
-}
-
-type Order = 'asc' | 'desc';
-
-function getComparator<Key extends keyof never>(
-    order: Order,
-    orderBy: Key,
-): (
-    a: { [key in Key]: number | string },
-    b: { [key in Key]: number | string },
-) => number {
-    return order === 'desc'
-        ? (a, b) => descendingComparator(a, b, orderBy)
-        : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-
-interface EnhancedTableToolbarProps {
-    numSelected: number;
-}
-
-function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-    const { numSelected } = props;
-    return (
-        <Toolbar
-            sx={[
-                {
-                    pl: { sm: 2 },
-                    pr: { xs: 1, sm: 1 },
-                },
-                numSelected > 0
-            ]}
-        >
-        </Toolbar>
-    );
-}
-
 export default function LeadsViewOne() {
-    const [selected, setSelected] = React.useState<readonly number[]>([]);
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [rows, setRows] = useState<Data[]>([]);
     const [loading, setLoading] = useState(true);
-    const {setSelectedId} = useIDContext()
+    const {setSelectedId} = useIDContext(); // Access context to set selected ID
 
 
 
@@ -171,23 +125,12 @@ export default function LeadsViewOne() {
 
     const [statusFilter, setStatusFilter] = React.useState('');
     const [leadTypeFilter, setLeadTypeFilter] = React.useState('');
-    const visibleRows: Data[] = React.useMemo(():Data[] => {
-
-        let processedRow = [...rows];
-
-        if (statusFilter !== '') {
-            processedRow = processedRow.filter((row: Data) => row.status == statusFilter);
-            console.log(statusFilter)
-        }
-
-        if (leadTypeFilter !== '') {
-            processedRow = processedRow.filter((row: Data) => row.source == leadTypeFilter);
-        }
-
-        return processedRow
-        //     .sort(getComparator( ))
-        //     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-    }, [rows,statusFilter, leadTypeFilter, page, rowsPerPage]);
+    const visibleRows = useMemo(() => {
+        let filteredRows = [...rows];
+        if (statusFilter) filteredRows = filteredRows.filter(row => row.status=== statusFilter.toLowerCase());
+        if (leadTypeFilter) filteredRows = filteredRows.filter(row => row.source === leadTypeFilter.toLowerCase());
+        return filteredRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+    }, [rows, statusFilter, leadTypeFilter, page, rowsPerPage]);
 
     const handleResetFilters = () => {
         setStatusFilter("");
@@ -211,7 +154,6 @@ export default function LeadsViewOne() {
 
                 <div className='flex flex-row items-center gap-3.5 h-10 shadow  my-5'>
 
-                    <EnhancedTableToolbar numSelected={selected.length}/>
                     <SplitButton onFilters={setLeadTypeFilter}/>
                     <ResetFilter onReset={handleResetFilters}/>
 
@@ -235,7 +177,6 @@ export default function LeadsViewOne() {
                         >
                             <TableBody>
                                 {visibleRows.map((row, index) => {
-                                    const isItemSelected = selected.includes(row.id);
                                     const labelId = `enhanced-table-checkbox-${index}`;
 
                                     let interestColor = "";
@@ -267,10 +208,9 @@ export default function LeadsViewOne() {
                                             hover
                                             onClick={(event) => handleClick(event, row.id)}
                                             role="checkbox"
-                                            aria-checked={isItemSelected}
+
                                             tabIndex={-1}
                                             key={row.id}
-                                            selected={isItemSelected}
                                             sx={{cursor: 'pointer',height:"145px",  paddingX:'15px',
                                                 paddingY:'10px'}}
                                         >

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
@@ -19,6 +19,8 @@ import SelectedButton from "@/app/_Components/secHeader/groupButton";
 import SearchAppBar from "@/app/_Components/secHeader";
 import SplitButton from "@/app/customers/filters";
 import ResetFilter from "@/app/customers/resetFilter";
+import TablePagination from "@mui/material/TablePagination";
+import {useIDContext} from "@/app/context/customerIdProvider";
 
 interface Contact {
     id: number;
@@ -214,17 +216,27 @@ function Row({ row }: { row: Data }) {
 
 export default function AccountSecView() {
     const [rows, setRows] = useState<Data[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [leadTypeFilter, setLeadTypeFilter] = React.useState('');
     const [statusFilter, setStatusFilter] = React.useState('');
-    const [selected, setSelected] = React.useState<readonly number[]>([]);
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(7);
+    const [loading, setLoading] = useState(true);
 
-    const handleResetFilters = () => {
-        setStatusFilter("");
-        setLeadTypeFilter("");
-        setRows(rows);
+
+    const visibleRows = useMemo(() => {
+        let filteredRows = [...rows];
+        if (statusFilter) filteredRows = filteredRows.filter(row => row.status=== statusFilter.toLowerCase());
+        return filteredRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+    }, [rows, statusFilter,  page, rowsPerPage]);
+
+    const handleChangePage = (event: unknown, newPage: number) => {
+        setPage(newPage);
+    };
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
+
+
 
 
     useEffect(() => {
@@ -244,40 +256,46 @@ export default function AccountSecView() {
         fetchAccountsData();
     }, []);
     // TODO filter adjustment
-    // TODO paddig and margin adjustment
-    // TODO view adjustment
+
+
+    if (loading) return <div className='loader'></div>;
+
+
     return (
         <Box sx={{width:'100%'}}>
-            <div className='flex z-50 items-center'>
+            <div className='flex z-50 items-center mb-5'>
                 <SelectedButton onFilter={setStatusFilter}/>
                 <SearchAppBar/>
             </div>
-            {/*TODO from Lead view one  some adjustement    */}
-            <div className='flex flex-row items-center gap-3.5 h-10 shadow  my-5'>
 
-                {/*<EnhancedTableToolbar numSelected={selected.length}/>*/}
-                <SplitButton/>
-                <ResetFilter/>
 
-            </div>
             <TableContainer className='flex' sx={{border: 'none'}}>
 
-                <Box className='flex flex-col z-50 py-6 px-4 rounded w-1/5 secondaryColor'>
+                <Box className='flex flex-col z-50 py-6 px-4 mt-2 rounded w-1/5 secondaryColor'>
                     <div><h1 className='mainColor border-b pb-2 text-2xl font-bold'>Filter</h1>
                     </div>
                     <div>
                         <CollapsibleTable/>
                     </div>
                 </Box>
-                <Table className='w-4/5' sx={{borderSpacing: '0 10px', borderCollapse: 'separate'}}
+                <Table className='w-4/5 ml-2.5 mt-0' sx={{borderSpacing: '0 10px', borderCollapse: 'separate'}}
                        aria-label="collapsible table">
                     <TableBody>
-                        {rows.map((row) => (
+                        {visibleRows.map((row) => (
                             <Row key={row.id} row={row}/>
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
+            <TablePagination
+                rowsPerPageOptions={[5, 7, 10]}
+                component="div"
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+            />
         </Box>
     );
 }
