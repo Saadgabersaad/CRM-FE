@@ -131,7 +131,7 @@ const headCells: readonly HeadCell[] = [
     },
     {
         id: 'phone',
-        numeric: false,
+        numeric: true,
         disablePadding: false,
         label: 'Contact Information',
     },
@@ -144,17 +144,17 @@ const headCells: readonly HeadCell[] = [
     {
         id: 'type',
         numeric: true,
-        disablePadding: false,
+        disablePadding: true,
         label: 'Type of Client',
     }, {
         id: 'status',
-        numeric: true,
+        numeric: false,
         disablePadding: false,
         label: 'Status',
     }, {
 
         id: 'last_contacted',
-        numeric: true,
+        numeric: false,
         disablePadding: false,
         label: 'Last Contacted',
     },
@@ -191,7 +191,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                             backgroundColor:'#F9FAFC',
                             padding: '10px'}}
                         key={headCell.id}
-                        align={headCell.numeric ? 'left' : 'left'}
+                        align={headCell.numeric ? 'left' : 'center'}
                         padding={headCell.disablePadding ? 'none' : 'normal'}
                         sortDirection={orderBy === headCell.id ? order : false}
                     >
@@ -524,7 +524,7 @@ export default function Customers() {
                                             borderRight: '0',
                                             padding:'10px'
 
-                                        }} padding="none" align="left">
+                                        }} padding="none" align="center">
                                             <span>  <StatusMenu initialState={''} initialStatus={row.status}/></span>
 
                                         </TableCell>
@@ -536,7 +536,7 @@ export default function Customers() {
                                                 borderRight: "0",
                                                 padding:'10px'
 
-                                            }} padding="none" align="left">{row.last_contacted}</TableCell>
+                                            }} padding="none" align="center">{row.last_contacted}</TableCell>
 
                                         <TableCell sx={{
                                             border: '1px solid #ccc',

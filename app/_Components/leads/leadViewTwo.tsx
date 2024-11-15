@@ -116,13 +116,13 @@ const headCells: readonly HeadCell[] = [
 
     {
         id: 'phone',
-        numeric: false,
+        numeric: true,
         disablePadding: false,
         label: 'Contact Information',
     },
     {
         id: 'interest_level',
-        numeric: false,
+        numeric: true,
         disablePadding: false,
         label: 'Interest Level',
     },
@@ -139,13 +139,13 @@ const headCells: readonly HeadCell[] = [
         label: 'Assigned to',
     }, {
         id: 'status',
-        numeric: true,
+        numeric: false,
         disablePadding: false,
         label: 'Status',
     }, {
 
         id: 'created',
-        numeric: true,
+        numeric: false,
         disablePadding: false,
         label: 'Created at',
     },
@@ -181,7 +181,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                             backgroundColor:'#F9FAFC',
                             padding: '10px'}}
                         key={headCell.id}
-                        align={headCell.numeric ? 'left' : 'left'}
+                        align={headCell.numeric ? 'left' : 'center'}
                         padding={headCell.disablePadding ? 'none' : 'normal'}
                         sortDirection={orderBy === headCell.id ? order : false}
                     >
@@ -508,7 +508,7 @@ export default function LeadsviewTwo() {
                                                 borderRight: "0",
                                                 padding:'10px'
 
-                                            }} padding="none" align="left">{row.created}</TableCell>
+                                            }} padding="none" align="center">{row.created}</TableCell>
 
                                         <TableCell sx={{
                                             border: '1px solid #ccc',

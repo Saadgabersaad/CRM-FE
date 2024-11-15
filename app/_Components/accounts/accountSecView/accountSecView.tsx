@@ -11,16 +11,17 @@ import Typography from '@mui/material/Typography';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import Image from "next/image";
-// import Logo from "../../../assets/beed83bf6aee26c5540858387e08bd9a.jpeg
+import Logo from '../../../assets/beed83bf6aee26c5540858387e08bd9a.jpeg';
 import { Mail, Phone, SquarePen } from 'lucide-react';
 import ApiService from "@/app/services/api.service";
 import CollapsibleTable from "@/app/leads/collapse";
 import SelectedButton from "@/app/_Components/secHeader/groupButton";
 import SearchAppBar from "@/app/_Components/secHeader";
-import SplitButton from "@/app/customers/filters";
-import ResetFilter from "@/app/customers/resetFilter";
+
 import TablePagination from "@mui/material/TablePagination";
 import {useIDContext} from "@/app/context/customerIdProvider";
+import ModeCommentOutlinedIcon from "@mui/icons-material/ModeCommentOutlined";
+import StatusMenu from "@/app/_Components/popUpMenu/statusMenu";
 
 interface Contact {
     id: number;
@@ -103,30 +104,12 @@ function Row({ row }: { row: Data }) {
                     <span className="text-primary"> $ Revenue : </span>
                     {row.annual_revenue}
                 </TableCell>
+
                 <TableCell sx={{
                     border: '1px solid #E4E4E4',
+                    borderLeft: "0",
                     borderRight: "0",
-                    borderLeft: "0",
-                    height: '88px'
-                }}>
-                    <div
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            borderRadius: '5px',
-                            padding: '8px',
-                            backgroundColor: row.status === 'active' ? '#ccf0eb' : '#e0d4fc',
-                            color: row.status === 'active' ? '#00B69B' : '#6226EF',
-                        }}
-                    >
-                        {row.status}
-                    </div>
-                </TableCell>
-                <TableCell sx={{
-                    border: '1px solid #E4E4E4',
-                    borderLeft: "0",
-                    borderTopRightRadius: '4px',
-                    borderBottomRightRadius:'4px',
+
                     height: '88px' }}>
                     <div
                         style={{
@@ -141,6 +124,48 @@ function Row({ row }: { row: Data }) {
                         {row.industry}
                     </div>
                 </TableCell>
+
+                <TableCell sx={{
+                    border: '1px solid #E4E4E4',
+                    borderLeft: "0",
+                    borderRight:'0',
+                    height: '88px'
+                }}>
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            borderRadius: '5px',
+                            padding: '8px',
+                            backgroundColor: row.status === 'active' ? '#ccf0eb' : '#e0d4fc',
+                            color: row.status === 'active' ? '#00B69B' : '#6226EF',
+                        }}
+                    >
+                        <StatusMenu accStatus={row.status} initialState={null}/>
+                    </div>
+                </TableCell>
+                <TableCell sx={{
+                    border: '1px solid #E4E4E4',
+                    borderLeft: "0",
+                    borderTopRightRadius: '4px',
+                    borderBottomRightRadius:'4px',
+                    height: '88px'
+                }}>
+                    <button
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'end',
+                            borderRadius: '5px',
+                        }}
+                    >
+                        <ModeCommentOutlinedIcon
+                            className='mainColor font-bold'
+                            sx={{ marginRight: '5px', padding: '1px' }}
+                            fontSize="small"
+                        />
+                    </button>
+                </TableCell>
+
             </TableRow>
 
             <TableRow>
@@ -171,7 +196,7 @@ function Row({ row }: { row: Data }) {
                                                 borderLeft: "0" }}>
                                                 <div className="row">
                                                     {/*Todo user Images*/}
-                                                    {/*<Image className="rounded-full" src={Logo} alt="profile" width={28} height={28} />*/}
+                                                    <Image className="rounded-full" src={Logo} alt="profile" width={28} height={28} />
                                                     <div>{contact.name}</div>
                                                 </div>
                                             </TableCell>
@@ -184,13 +209,16 @@ function Row({ row }: { row: Data }) {
                                             </TableCell>
                                             <TableCell sx={{ border: '1px solid #E4E4E4',
                                                 borderRight: "0",
-                                                borderLeft: "0" }}>
-                                                <Mail size={20} /> {contact.email}
+                                                borderLeft: "0" ,
+
+                                            }}>
+                                                <div className="row"> <Mail size={20} /> <span>{contact.email}</span></div>
                                             </TableCell>
+
                                             <TableCell sx={{  border: '1px solid #E4E4E4',
                                                 borderRight: "0",
                                                 borderLeft: "0", }}>
-                                                <Phone size={20} /> {contact.phone}
+                                                <div className='row'><Phone size={20} /> <span>{contact.phone}</span></div>
                                             </TableCell>
                                             <TableCell sx={{
                                                 border: '1px solid #E4E4E4',

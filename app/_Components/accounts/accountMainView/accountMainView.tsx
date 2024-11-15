@@ -21,6 +21,7 @@ import {useEffect, useState} from "react";
 import ApiService from "@/app/services/api.service";
 import ResetFilter from "@/app/customers/resetFilter";
 import {useIDContext} from "@/app/context/customerIdProvider";
+import StatusMenu from "@/app/_Components/popUpMenu/statusMenu";
 
 
 interface Contact {
@@ -117,7 +118,7 @@ const headCells: readonly HeadCell[] = [
     },
     {
         id: 'contacts',
-        numeric: false,
+        numeric: true,
         disablePadding: false,
         label: 'Contact Information',
     },
@@ -130,7 +131,7 @@ const headCells: readonly HeadCell[] = [
     },
     {
         id: 'status',
-        numeric: true,
+        numeric: false,
         disablePadding: false,
         label: 'Status',
     }, {
@@ -178,7 +179,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                             backgroundColor:'#F9FAFC',
                             padding: '10px'}}
                         key={headCell.id}
-                        align={headCell.numeric ? 'left' : 'left'}
+                        align={headCell.numeric ? 'left' : 'center'}
                         padding={headCell.disablePadding ? 'none' : 'normal'}
                         sortDirection={orderBy === headCell.id ? order : false}
                     >
@@ -483,7 +484,7 @@ export default function AccountMainView() {
                                                 borderRight: '0',
                                                 padding: '10px',
                                             }} padding="none" align="left">
-                                            <span className='  font-bold bg-[#DDEAFB] py-2 px-4 rounded-lg mainColor ' >
+                                            <span className='  font-bold bg-[#DDEAFB] py-2.5 px-4 rounded-lg mainColor ' >
                                                 {row.assigned_to}
                                             </span>
 
@@ -497,12 +498,10 @@ export default function AccountMainView() {
                                                 borderRight: '0',
                                                 padding:'10px',
 
-                                            }} padding="none"   align="left">
-                                            <span className={`
-                                            ${row.status ==='active'?'bg-[#ccf0eb]':'bg-red-400'}
-                                            ${row.status ==='active'?'text-[#00B69B]':'text-[#EF3826]'}
-                                             rounded  items-center p-2 gap-1.5 font-bold `}>
-                                                {row.status}
+                                            }} padding="none"   align="center">
+                                            <span
+                                            >
+                                                  <StatusMenu accStatus={row.status}/>
                                             </span>
 
                                         </TableCell>

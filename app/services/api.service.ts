@@ -80,6 +80,7 @@ class ApiService {
         }
     }
 
+
     async deleteCustomer(id:number) {
         try {
             const response = await axios.delete(`${this._basePath}customers/${id}`);
@@ -168,6 +169,18 @@ class ApiService {
             return response.data;
         } catch (error) {
             console.error('Error edit accounts:', error);
+            throw error;
+        }
+    }
+    async updateAccountStatus(id: number | null, values: { status: string }) {
+        try {
+            const response = await axios.patch(
+                `${this._basePath}accounts/${id}`,
+                values
+            );
+            return response.data;
+        } catch (error) {
+            console.error('Error edit customer:', error);
             throw error;
         }
     }

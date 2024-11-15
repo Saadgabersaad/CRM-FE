@@ -53,7 +53,6 @@ export default function SelectedButton({ onFilter }: SelectedButtonProps) {
                 p: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
-
             }}
             className="mainColor  flex-row rounded gap-0.5 font-[700] items-center  secondaryColor px-1.5 p-1"
         >

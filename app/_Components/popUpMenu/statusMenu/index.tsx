@@ -11,50 +11,54 @@ import ListItemText from '@mui/material/ListItemText';
 import { usePathname } from 'next/navigation';
 import ApiService from "@/app/services/api.service";
 import { useIDContext } from "@/app/context/customerIdProvider";
-import { useFormik } from "formik";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState, useMemo } from "react";
 
+// Define interface for options
 interface Option {
     label: string;
     backgroundColor: string;
     color: string;
 }
 
-const statusOptions: Option[] = [
-    { label: 'Current', backgroundColor: '#ccf0eb', color: '#00B69B' },
-    { label: 'Potential', backgroundColor: '#e0d4fc', color: '#6226EF' },
-];
+// Define status options for each route
+const STATUS_OPTIONS: Record<string, Option[]> = {
+    '/customers': [
+        { label: 'Current', backgroundColor: '#ccf0eb', color: '#00B69B' },
+        { label: 'Potential', backgroundColor: '#e0d4fc', color: '#6226EF' },
+    ],
+    '/leads': [
+        { label: 'New', backgroundColor: '#EEF5F0', color: '#589E67' },
+        { label: 'Lost', backgroundColor: '#EEF5F0', color: '#589E67' },
+        { label: 'Qualified', backgroundColor: '#F7F7E8', color: '#B1AB1D' },
+        { label: 'Contacted', backgroundColor: '#F4EDF7', color: '#954BAF' },
+    ],
+    '/accounts': [
+        { label: 'Active', backgroundColor: '#ccf0eb', color: '#00B69B' },
+        { label: 'Inactive', backgroundColor: '#e0d4fc', color: '#EF3826' },
+    ],
+};
 
-const stateOptions: Option[] = [
-    { label: 'New', backgroundColor: '#EEF5F0', color: '#589E67' },
-    { label: 'Lost', backgroundColor: '#EEF5F0', color: '#589E67' },
-    { label: 'Qualified', backgroundColor: '#F7F7E8', color: '#B1AB1D' },
-    { label: 'Contacted', backgroundColor: '#F4EDF7', color: '#954BAF' },
-];
-
+// Props interface
 interface StatusMenuProps {
     initialStatus: string;
     initialState: string;
+    accStatus: string;
 }
 
-const getBackgroundColor = (label: string, pathname: string) => {
-    const options = pathname === '/customers' ? statusOptions : stateOptions;
-    return options.find(opt => opt.label.toLowerCase() === label.toLowerCase())?.backgroundColor;
-};
+// Helper to get options based on pathname
+const getOptions = (pathname: string): Option[] => STATUS_OPTIONS[pathname] || [];
 
-const getColor = (label: string, pathname: string) => {
-    const options = pathname === '/customers' ? statusOptions : stateOptions;
-    return options.find(opt => opt.label.toLowerCase() === label.toLowerCase())?.color;
-};
-
-export default function StatusMenu({ initialStatus, initialState }: StatusMenuProps) {
+// Main component
+export default function StatusMenu({ initialStatus, initialState, accStatus }: StatusMenuProps) {
     const { selectedId } = useIDContext();
     const pathname = usePathname();
-    const options = React.useMemo(() => pathname === '/customers' ? statusOptions : stateOptions, [pathname]);
+    const options = useMemo(() => getOptions(pathname), [pathname]);
+
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const [selectedIndex, setSelectedIndex] = useState(0);
-    const [selectedStatus, setSelectedStatus] = useState(initialStatus);
-    const [selectedState, setSelectedState] = useState(initialState);
+    const [selectedValue, setSelectedValue] = useState(
+        pathname === '/customers' ? initialStatus :
+            pathname === '/leads' ? initialState : accStatus
+    );
 
     const open = Boolean(anchorEl);
 
@@ -63,68 +67,31 @@ export default function StatusMenu({ initialStatus, initialState }: StatusMenuPr
     };
 
     const handleMenuItemClick = async (event: React.MouseEvent<HTMLElement>, index: number) => {
-        const selectedOption = options[index];
-        setSelectedIndex(index);
-
-        if (pathname === '/customers') {
-            const newStatus = selectedOption.label.toLowerCase();
-            if (newStatus !== selectedStatus) {
-                setSelectedStatus(newStatus);
-                await updateStatus(newStatus); // Call updateStatus with the new status
-            }
-        } else {
-            const newState = selectedOption.label.toLowerCase();
-            if (newState !== selectedState) {
-                setSelectedState(newState);
-                await updateStatus(newState); // Call updateStatus with the new state
-            }
+        const newValue = options[index].label.toLowerCase();
+        if (newValue !== selectedValue) {
+            setSelectedValue(newValue);
+            await updateStatus(newValue);
         }
-
         setAnchorEl(null);
     };
 
     const updateStatus = useCallback(
-        async (newStatus: string) => {
+        async (newValue: string) => {
             try {
                 if (pathname === '/customers') {
-                await ApiService.updateCustomerStatus(selectedId, { status: newStatus });
-                console.log('Status updated successfully:', newStatus);}
-                if (pathname==='/leads'){
-                    await ApiService.updateLeadStatus(selectedId, { status: newStatus });
+                    await ApiService.updateCustomerStatus(selectedId, { status: newValue });
+                } else if (pathname === '/leads') {
+                    await ApiService.updateLeadStatus(selectedId, { status: newValue });
+                } else if (pathname === '/accounts') {
+                    await ApiService.updateAccountStatus(selectedId, { status: newValue });
                 }
-
-
+                console.log('Status updated successfully:', newValue);
             } catch (error) {
                 console.error('Failed to update status:', error);
             }
         },
-        [selectedId]
+        [selectedId, pathname]
     );
-
-    const formik = useFormik({
-        initialValues: {
-            name: '',
-            company_name: '',
-            address: '',
-            phone: '',
-            email: '',
-            country: '',
-            status: '',
-            type: ''
-        },
-        onSubmit: async (values) => {
-            try {
-                console.log('Edited values:', values);
-                await ApiService.editCustomer(selectedId, values);
-            } catch (error) {
-                console.error('Failed to edit customer:', error);
-            }
-        },
-    });
-
-    useEffect(() => {
-        return () => setAnchorEl(null); // Cleanup anchor element on unmount
-    }, [selectedId, selectedStatus, selectedState, initialStatus, initialState, updateStatus]);
 
     const handleClose = () => {
         setAnchorEl(null);
@@ -132,7 +99,12 @@ export default function StatusMenu({ initialStatus, initialState }: StatusMenuPr
 
     return (
         <div>
-            <List disablePadding component="nav" aria-label="Status menu">
+            <List
+                sx={{ display: 'flex', justifyContent: 'center' }}
+                disablePadding
+                component="nav"
+                aria-label="Status menu"
+            >
                 <ListItemButton
                     id="lock-button"
                     aria-haspopup="listbox"
@@ -143,13 +115,19 @@ export default function StatusMenu({ initialStatus, initialState }: StatusMenuPr
                         width: 'fit-content',
                         borderRadius: '5px',
                         padding: '8px',
-                        backgroundColor: getBackgroundColor(pathname === '/customers' ? selectedStatus : selectedState, pathname),
-                        color: getColor(pathname === '/customers' ? selectedStatus : selectedState, pathname),
+                        backgroundColor: options.find(o => o.label.toLowerCase() === selectedValue)?.backgroundColor,
+                        color: options.find(o => o.label.toLowerCase() === selectedValue)?.color,
                     }}
                 >
                     <ListItemText
-                        sx={{ fontSize: '12px', margin: 0 }}
-                        primary={pathname === '/customers' ? selectedStatus : selectedState}
+                        sx={{
+                            fontSize: '12px',
+                            margin: 0,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                        primary={selectedValue}
                     />
                 </ListItemButton>
             </List>
@@ -178,9 +156,12 @@ export default function StatusMenu({ initialStatus, initialState }: StatusMenuPr
                             margin: '10px',
                             backgroundColor: option.backgroundColor,
                             color: option.color,
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
                         }}
-                        selected={index === selectedIndex}
+                        selected={option.label.toLowerCase() === selectedValue}
                         onClick={(event) => handleMenuItemClick(event, index)}
                     >
                         {option.label}
