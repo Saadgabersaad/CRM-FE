@@ -41,15 +41,6 @@ const DashboardLayout = ({children}: {children: React.ReactNode}) => {
         </IDProvider>
     )
 }
-// const DashboardWrapper = ({children}: {children: React.ReactNode}) => {
-//     return(
-//        <CounterContextProvider>
-//            <DashboardLayout >
-//                {children}
-//            </DashboardLayout>
-//        </CounterContextProvider>
-//     )
-// }
 
 
 export default DashboardLayout

@@ -21,9 +21,10 @@ import ResetFilter from "@/app/customers/resetFilter";
 import {useIDContext} from "@/app/context/customerIdProvider";
 import Image from "next/image";
 import Logo from "../../assets/beed83bf6aee26c5540858387e08bd9a.jpeg"
-
-import CollapsibleTable from "@/app/leads/collapse";
 import LongMenu from "@/app/_Components/option";
+import AccordionUsage from "@/app/leads/sideFilters";
+
+
 
 
 interface Data {
@@ -124,20 +125,33 @@ export default function LeadsViewOne() {
     };
 
     const [statusFilter, setStatusFilter] = React.useState('');
-    const [leadTypeFilter, setLeadTypeFilter] = React.useState('');
+    const [interestFilter, setInterestFilter] = React.useState('');
+    const [sourceFilter, setSourceFilter] = React.useState('');
+    const [fieldFilter, setFieldFilter] = React.useState('');
+    const applyFilters = (rows: Data[], filters: Record<string, any>) => {
+        return rows.filter(row =>
+            Object.keys(filters).every(key =>
+                !filters[key] || row[key as keyof Data] === filters[key]
+            )
+        );
+    };
     const visibleRows = useMemo(() => {
-        let filteredRows = [...rows];
-        if (statusFilter) filteredRows = filteredRows.filter(row => row.status=== statusFilter.toLowerCase());
-        if (leadTypeFilter) filteredRows = filteredRows.filter(row => row.source === leadTypeFilter.toLowerCase());
-        return filteredRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-    }, [rows, statusFilter, leadTypeFilter, page, rowsPerPage]);
+        const filters = { status: statusFilter, source: sourceFilter,interest_level:interestFilter,field:fieldFilter };
+        return applyFilters(rows, filters).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+    }, [rows, statusFilter, sourceFilter, page, rowsPerPage,interestFilter,fieldFilter]);
+
 
     const handleResetFilters = () => {
         setStatusFilter("");
-        setLeadTypeFilter("");
+        setSourceFilter("");
+        setInterestFilter("");
+        setFieldFilter("");
         setRows(rows);
         setPage(0);
     };
+
+
+
 
 
     if (loading) return <div className='loader'></div>;
@@ -154,17 +168,18 @@ export default function LeadsViewOne() {
 
                 <div className='flex flex-row items-center gap-3.5 h-10 shadow  my-5'>
 
-                    <SplitButton onFilters={setLeadTypeFilter}/>
+                    <SplitButton onFilters={setSourceFilter}/>
                     <ResetFilter onReset={handleResetFilters}/>
 
                 </div>
 
                 <Paper sx={{width: '100%', mb: 2,display:'flex'}}>
                     <Box className='flex flex-col z-50 py-6 px-4 rounded w-1/5 secondaryColor'>
-                        <div><h1 className='mainColor border-b pb-2 text-2xl font-bold'>Filter</h1>
+                        <div>
+                            <h1 className='mainColor  border-0  text-2xl font-bold'>Filter</h1>
                         </div>
                         <div>
-                            <CollapsibleTable/>
+                            <AccordionUsage field={{fieldFilter,setFieldFilter}}  interest={{interestFilter,setInterestFilter}}  source={{sourceFilter,setSourceFilter}}  Status={{statusFilter, setStatusFilter}} />
                         </div>
                     </Box>
 

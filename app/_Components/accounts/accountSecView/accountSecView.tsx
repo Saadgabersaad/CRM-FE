@@ -14,14 +14,16 @@ import Image from "next/image";
 import Logo from '../../../assets/beed83bf6aee26c5540858387e08bd9a.jpeg';
 import { Mail, Phone, SquarePen } from 'lucide-react';
 import ApiService from "@/app/services/api.service";
-import CollapsibleTable from "@/app/leads/collapse";
 import SelectedButton from "@/app/_Components/secHeader/groupButton";
 import SearchAppBar from "@/app/_Components/secHeader";
-
 import TablePagination from "@mui/material/TablePagination";
-import {useIDContext} from "@/app/context/customerIdProvider";
 import ModeCommentOutlinedIcon from "@mui/icons-material/ModeCommentOutlined";
 import StatusMenu from "@/app/_Components/popUpMenu/statusMenu";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import {Checkbox, FormControlLabel} from "@mui/material";
 
 interface Contact {
     id: number;
@@ -131,18 +133,8 @@ function Row({ row }: { row: Data }) {
                     borderRight:'0',
                     height: '88px'
                 }}>
-                    <div
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            borderRadius: '5px',
-                            padding: '8px',
-                            backgroundColor: row.status === 'active' ? '#ccf0eb' : '#e0d4fc',
-                            color: row.status === 'active' ? '#00B69B' : '#6226EF',
-                        }}
-                    >
                         <StatusMenu accStatus={row.status} initialState={null}/>
-                    </div>
+
                 </TableCell>
                 <TableCell sx={{
                     border: '1px solid #E4E4E4',
@@ -242,7 +234,7 @@ function Row({ row }: { row: Data }) {
     );
 }
 
-export default function AccountSecView() {
+export default function AccountSecView( ) {
     const [rows, setRows] = useState<Data[]>([]);
     const [statusFilter, setStatusFilter] = React.useState('');
     const [page, setPage] = React.useState(0);
@@ -289,6 +281,21 @@ export default function AccountSecView() {
     if (loading) return <div className='loader'></div>;
 
 
+    const ACCOUNT_STATUS_FILTER = {
+        id:'id   ',
+        name:'Account Status',
+        options :[
+            {value:'new',label:'New'},
+            {value:'connected',label:'Connected'},
+            {value:'qualified',label:'Qualified'},
+            {value:'lost',label:'Lost'},
+
+        ] as const,
+    }
+
+
+
+
     return (
         <Box sx={{width:'100%'}}>
             <div className='flex z-50 items-center mb-5'>
@@ -303,12 +310,36 @@ export default function AccountSecView() {
                     <div><h1 className='mainColor border-b pb-2 text-2xl font-bold'>Filter</h1>
                     </div>
                     <div>
-                        <CollapsibleTable/>
+                        <Accordion className='secondaryColor shadow-none'>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1-content"
+                                id="panel1-header"
+                            >
+                                Industry Sector
+                            </AccordionSummary>
+
+                            <AccordionDetails>
+                                <ul>
+                                    {ACCOUNT_STATUS_FILTER.options.map((option, optionIdx) => (
+                                        <li  key={option.value}>
+                                            <FormControlLabel
+                                            control={<Checkbox    onChange={() => setStatusFilter(option.value)}
+                                                                  checked={statusFilter === option.value}
+                                            />} label={option.label} /></li>
+                                    ))}
+                                </ul>
+                            </AccordionDetails>
+
+                        </Accordion>
                     </div>
                 </Box>
+
+
                 <Table className='w-4/5 ml-2.5 mt-0' sx={{borderSpacing: '0 10px', borderCollapse: 'separate'}}
                        aria-label="collapsible table">
                     <TableBody>
+
                         {visibleRows.map((row) => (
                             <Row key={row.id} row={row}/>
                         ))}

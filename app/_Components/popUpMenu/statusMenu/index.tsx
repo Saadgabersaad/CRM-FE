@@ -13,7 +13,7 @@ import ApiService from "@/app/services/api.service";
 import { useIDContext } from "@/app/context/customerIdProvider";
 import { useCallback, useState, useMemo } from "react";
 
-// Define interface for options
+        // Define interface for options
 interface Option {
     label: string;
     backgroundColor: string;
@@ -34,7 +34,7 @@ const STATUS_OPTIONS: Record<string, Option[]> = {
     ],
     '/accounts': [
         { label: 'Active', backgroundColor: '#ccf0eb', color: '#00B69B' },
-        { label: 'Inactive', backgroundColor: '#e0d4fc', color: '#EF3826' },
+        { label: 'Inactive', backgroundColor: '#f5d4d4', color: '#EF3826' },
     ],
 };
 

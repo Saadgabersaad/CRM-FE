@@ -163,3 +163,15 @@ span .MuiListItemText-primary {
   border-radius: 5px;
   color: white;
 }
+
+.MuiAccordionSummary-content    {
+  margin: 0 0  !important  ;
+  padding-bottom:0 !important ;
+}
+.css-1f773le-MuiButtonBase-root-MuiAccordionSummary-root .Mui-expanded{
+  min-height: 20px !important;
+}
+
+.css-nt424e-MuiPaper-root-MuiAccordion-root.Mui-expanded{
+  margin-bottom: 0 !important;
+}
